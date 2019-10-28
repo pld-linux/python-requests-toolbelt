@@ -10,7 +10,7 @@
 Summary:	Utility belt for advanced users of python-requests
 Name:		python-%{pypi_name}
 Version:	0.8.0
-Release:	2
+Release:	3
 License:	Apache v2.0
 Group:		Libraries/Python
 Source0:	https://github.com/sigmavirus24/requests-toolbelt/archive/%{version}/%{pypi_name}-%{version}.tar.gz

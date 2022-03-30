@@ -12,7 +12,7 @@ Summary:	Utility belt for advanced users of python-requests
 Summary(pl.UTF-8):	Pasek narzędzi dla zaawansowanych użytkowników python-requests
 Name:		python-%{pypi_name}
 Version:	0.9.1
-Release:	2
+Release:	3
 License:	Apache v2.0
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/requests-toolbelt/

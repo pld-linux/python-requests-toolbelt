@@ -11,13 +11,13 @@
 Summary:	Utility belt for advanced users of python-requests
 Summary(pl.UTF-8):	Pasek narzędzi dla zaawansowanych użytkowników python-requests
 Name:		python-%{pypi_name}
-Version:	0.9.1
-Release:	3
+Version:	0.10.1
+Release:	1
 License:	Apache v2.0
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/requests-toolbelt/
 Source0:	https://files.pythonhosted.org/packages/source/r/requests-toolbelt/%{pypi_name}-%{version}.tar.gz
-# Source0-md5:	b1509735c4b4cf95df2619facbc3672e
+# Source0-md5:	636d226d03632d013269aebbc85f4f4b
 URL:		https://toolbelt.readthedocs.io/
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
@@ -32,10 +32,11 @@ BuildRequires:	python-pyOpenSSL
 BuildRequires:	python-pytest
 BuildRequires:	python-requests >= 2.0.1
 BuildRequires:	python-requests < 3
+BuildRequires:	python-trustme
 %endif
 %endif
 %if %{with python3}
-BuildRequires:	python3-modules >= 1:3.3
+BuildRequires:	python3-modules >= 1:3.4
 BuildRequires:	python3-setuptools
 %if %{with tests}
 BuildRequires:	python3-betamax
@@ -43,6 +44,7 @@ BuildRequires:	python3-pyOpenSSL
 BuildRequires:	python3-pytest
 BuildRequires:	python3-requests >= 2.0.1
 BuildRequires:	python3-requests < 3
+BuildRequires:	python3-trustme
 %endif
 %endif
 %if %{with doc}

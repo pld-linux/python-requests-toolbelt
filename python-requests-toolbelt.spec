@@ -87,6 +87,9 @@ Dokumentacja API modułu Pythona requests_toolbelt.
 %prep
 %setup -q -n %{pypi_name}-%{version}
 
+# Broken example leftover
+%{__sed} -i '/^intersphinx_mapping = .*/d' docs/conf.py
+
 %build
 %if %{with python2}
 %py_build

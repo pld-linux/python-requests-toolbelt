@@ -1,0 +1,8 @@
+--- requests-toolbelt-1.0.0/docs/conf.py.orig	2022-10-06 11:56:36.000000000 +0200
++++ requests-toolbelt-1.0.0/docs/conf.py	2025-11-28 17:32:39.729299560 +0100
+@@ -268,4 +268,4 @@ texinfo_documents = [
+ 
+ 
+ # Example configuration for intersphinx: refer to the Python standard library.
+-intersphinx_mapping = {'https://docs.python.org/': None}
++intersphinx_mapping = {"python": ('https://docs.python.org/', None)}

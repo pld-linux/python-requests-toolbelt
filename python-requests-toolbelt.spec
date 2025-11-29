@@ -1,27 +1,23 @@
 #
 # Conditional build:
 %bcond_without	doc	# Sphinx documentation
-%bcond_with	tests	# unit tests (some failing as of 0.9.1)
+%bcond_without	tests	# unit tests
 %bcond_without	python2 # CPython 2.x module
 %bcond_without	python3 # CPython 3.x module
 
 %define	module		requests_toolbelt
-%define	egg_name	requests_toolbelt
-%define	pypi_name	requests-toolbelt
 Summary:	Utility belt for advanced users of python-requests
 Summary(pl.UTF-8):	Pasek narzędzi dla zaawansowanych użytkowników python-requests
-Name:		python-%{pypi_name}
-Version:	0.10.1
-Release:	4
+Name:		python-requests-toolbelt
+Version:	1.0.0
+Release:	1
 License:	Apache v2.0
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/requests-toolbelt/
-Source0:	https://files.pythonhosted.org/packages/source/r/requests-toolbelt/%{pypi_name}-%{version}.tar.gz
-# Source0-md5:	636d226d03632d013269aebbc85f4f4b
+Source0:	https://files.pythonhosted.org/packages/source/r/requests-toolbelt/requests-toolbelt-%{version}.tar.gz
+# Source0-md5:	6a8348cfc9991b44e499345db1c6f925
+Patch0:		requests-toolbelt-intersphinx.patch
 URL:		https://toolbelt.readthedocs.io/
-BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.714
-BuildRequires:	sed >= 4.0
 %if %{with python2}
 BuildRequires:	python-modules >= 1:2.7
 BuildRequires:	python-setuptools
@@ -47,6 +43,9 @@ BuildRequires:	python3-requests < 3
 BuildRequires:	python3-trustme
 %endif
 %endif
+BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 1.714
+BuildRequires:	sed >= 4.0
 %if %{with doc}
 BuildRequires:	python3-sphinx_rtd_theme
 BuildRequires:	sphinx-pdg-3
@@ -61,16 +60,16 @@ really belong in requests proper.
 %description -l pl.UTF-8
 Zbiór narzędzi dla python-requests, nie należących do samych requests.
 
-%package -n python3-%{pypi_name}
+%package -n python3-requests-toolbelt
 Summary:	Utility belt for advanced users of python-requests
 Summary(pl.UTF-8):	Pasek narzędzi dla zaawansowanych użytkowników python-requests
 Group:		Libraries/Python
 
-%description -n python3-%{pypi_name}
+%description -n python3-requests-toolbelt
 This is just a collection of utilities for python-requests, but don't
 really belong in requests proper.
 
-%description -n python3-%{pypi_name} -l pl.UTF-8
+%description -n python3-requests-toolbelt -l pl.UTF-8
 Zbiór narzędzi dla python-requests, nie należących do samych requests.
 
 %package apidocs
@@ -85,19 +84,19 @@ API documentation for Python requests_toolbelt module.
 Dokumentacja API modułu Pythona requests_toolbelt.
 
 %prep
-%setup -q -n %{pypi_name}-%{version}
-
-# Broken example leftover
-%{__sed} -i '/^intersphinx_mapping = .*/d' docs/conf.py
+%setup -q -n requests-toolbelt-%{version}
+%patch -P0 -p1
 
 %build
 %if %{with python2}
 %py_build
 
 %if %{with tests}
+# test_pool tests with mocks fail on python2
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTEST_PLUGINS="betamax.fixtures.pytest" \
-%{__python} -m pytest -v tests
+PYTHONPATH=$(pwd) \
+%{__python} -m pytest -v tests -k 'not TestPool'
 %endif
 %endif
 
@@ -105,11 +104,9 @@ PYTEST_PLUGINS="betamax.fixtures.pytest" \
 %py3_build
 
 %if %{with tests}
-%{__sed} -i -e 's/import mock/from unittest import mock/; s/from mock import/from unittest.mock import/' \
-	tests/*.py tests/threaded/*.py
-
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTEST_PLUGINS="betamax.fixtures.pytest" \
+PYTHONPATH=$(pwd) \
 %{__python3} -m pytest -v tests
 %endif
 %endif
@@ -136,17 +133,17 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
-%doc README.rst HISTORY.rst LICENSE
+%doc AUTHORS.rst README.rst HISTORY.rst LICENSE
 %{py_sitescriptdir}/%{module}
-%{py_sitescriptdir}/%{egg_name}-%{version}-py*.egg-info
+%{py_sitescriptdir}/%{module}-%{version}-py*.egg-info
 %endif
 
 %if %{with python3}
-%files -n python3-%{pypi_name}
+%files -n python3-requests-toolbelt
 %defattr(644,root,root,755)
-%doc README.rst HISTORY.rst LICENSE
+%doc AUTHORS.rst README.rst HISTORY.rst LICENSE
 %{py3_sitescriptdir}/%{module}
-%{py3_sitescriptdir}/%{egg_name}-%{version}-py*.egg-info
+%{py3_sitescriptdir}/%{module}-%{version}-py*.egg-info
 %endif
 
 %if %{with doc}
